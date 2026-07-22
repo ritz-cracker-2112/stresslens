@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>StressLens — AI Wellness Platform</title>
@@ -589,7 +588,7 @@ textarea.journal-input {
 <div class="page-header">
   <div>
     <p class="page-subtitle" style="margin-bottom:2px;">Monday, Jul 20</p>
-    <h1 class="page-title">Good morning,User</h1>
+    <h1 class="page-title">Good morning, Alex</h1>
     <p class="page-subtitle">Your wellness overview for today</p>
   </div>
   <div class="avatar">A</div>
@@ -1071,36 +1070,22 @@ function appendBubble(text, role) {
   thread.scrollTop = thread.scrollHeight;
 }
 
-let chatHistory = [];
-
-async function callAssistant(text) {
-  appendBubble(text, 'user');
-
-  try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, history: chatHistory })
-    });
-    const data = await res.json();
-    appendBubble(data.reply, 'assistant');
-    chatHistory.push({ role: 'user', content: text });
-    chatHistory.push({ role: 'assistant', content: data.reply });
-  } catch (err) {
-    appendBubble("Couldn't reach the assistant — is the server running?", 'assistant');
-  }
-}
-
 function sendMessage() {
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
+  appendBubble(text, 'user');
   input.value = '';
-  callAssistant(text);
+  setTimeout(() => {
+    appendBubble("Thanks — this is a mockup response. Wire this up to your model to answer from real schedule and wellness data.", 'assistant');
+  }, 500);
 }
 
 function sendSuggested(btn) {
-  callAssistant(btn.textContent);
+  appendBubble(btn.textContent, 'user');
+  setTimeout(() => {
+    appendBubble("Thanks — this is a mockup response. Wire this up to your model to answer from real schedule and wellness data.", 'assistant');
+  }, 500);
 }
 
 document.getElementById('chat-input').addEventListener('keydown', (e) => {
