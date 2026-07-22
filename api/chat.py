@@ -1,11 +1,7 @@
-print("SERVER FILE IS RUNNING")
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import requests
-
-app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+from http.server import BaseHTTPRequestHandler
+import json
+import os
+import urllib.request
 
 SYSTEM_PROMPT = """Your job is to take user input on their stress levels and schedule and analyze it and then give appropriate feedback to alleviate their stress.
 You must be formal the whole time and answers should be short and get to the point
@@ -31,25 +27,44 @@ Ask them if this new plan is good or if they want to change something, or give a
 Based on their response change what is needed and give a plan until the user is satisfied.
 Finally ask if they need anything else, and if not say goodbye."""
 
-class ChatRequest(BaseModel):
-    message: str
-    history: list = []
+class handler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        content_length = int(self.headers['Content-Length'])
+        body = json.loads(self.rfile.read(content_length))
 
-@app.post("/chat")
-def chat(req: ChatRequest):
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-    messages += req.history
-    messages.append({"role": "user", "content": req.message})
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        messages += body.get("history", [])
+        messages.append({"role": "user", "content": body["message"]})
 
-    response = requests.post("http://localhost:11434/api/chat", json={
-        "model": "llama3.3",
-        "messages": messages,
-        "stream": False
-    })
+        req = urllib.request.Request(
+            "https://api.groq.com/openai/v1/chat/completions",
+            data=json.dumps({
+                "model": "llama-3.3-70b-versatile",
+                "messages": messages
+            }).encode(),
+            headers={
+                "Authorization": f"Bearer {os.environ['GROQ_API_KEY']}",
+                "Content-Type": "application/json"
+            }
+        )
 
-    reply_text = response.json()["message"]["content"]
-    return {"reply": reply_text}
+        with urllib.request.urlopen(req) as res:
+            data = json.loads(res.read())
+            reply_text = data["choices"][0]["message"]["content"]
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+        self.wfile.write(json.dumps({"reply": reply_text}).encode())
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
+```
+
+**`requirements.txt`** (Vercel needs this to know it's a Python function — can be empty, this uses only built-in libraries):
+```
