@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import json
 import os
 import urllib.request
+import traceback
 
 SYSTEM_PROMPT = """Your job is to take user input on their stress levels and schedule and analyze it and then give appropriate feedback to alleviate their stress.
 You must be formal the whole time and answers should be short and get to the point
@@ -29,34 +30,47 @@ Finally ask if they need anything else, and if not say goodbye."""
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        body = json.loads(self.rfile.read(content_length))
+        try:
+            content_length = int(self.headers['Content-Length'])
+            body = json.loads(self.rfile.read(content_length))
 
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-        messages += body.get("history", [])
-        messages.append({"role": "user", "content": body["message"]})
+            api_key = os.environ.get('GROQ_API_KEY')
+            if not api_key:
+                raise Exception("GROQ_API_KEY environment variable is not set")
 
-        req = urllib.request.Request(
-            "https://api.groq.com/openai/v1/chat/completions",
-            data=json.dumps({
-                "model": "llama-3.3-70b-versatile",
-                "messages": messages
-            }).encode(),
-            headers={
-                "Authorization": f"Bearer {os.environ['GROQ_API_KEY']}",
-                "Content-Type": "application/json"
-            }
-        )
+            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            messages += body.get("history", [])
+            messages.append({"role": "user", "content": body["message"]})
 
-        with urllib.request.urlopen(req) as res:
-            data = json.loads(res.read())
-            reply_text = data["choices"][0]["message"]["content"]
+            req = urllib.request.Request(
+                "https://api.groq.com/openai/v1/chat/completions",
+                data=json.dumps({
+                    "model": "llama-3.3-70b-versatile",
+                    "messages": messages
+                }).encode(),
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                }
+            )
 
-        self.send_response(200)
-        self.send_header('Content-Type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.end_headers()
-        self.wfile.write(json.dumps({"reply": reply_text}).encode())
+            with urllib.request.urlopen(req) as res:
+                data = json.loads(res.read())
+                reply_text = data["choices"][0]["message"]["content"]
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({"reply": reply_text}).encode())
+
+        except Exception as e:
+            error_detail = traceback.format_exc()
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({"reply": f"ERROR: {str(e)}\n\n{error_detail}"}).encode())
 
     def do_OPTIONS(self):
         self.send_response(200)
@@ -64,4 +78,3 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
-# no external dependencies
