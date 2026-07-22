@@ -1070,22 +1070,36 @@ function appendBubble(text, role) {
   thread.scrollTop = thread.scrollHeight;
 }
 
+let chatHistory = [];
+
+async function callAssistant(text) {
+  appendBubble(text, 'user');
+
+  try {
+    const res = await fetch('http://localhost:8000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history: chatHistory })
+    });
+    const data = await res.json();
+    appendBubble(data.reply, 'assistant');
+    chatHistory.push({ role: 'user', content: text });
+    chatHistory.push({ role: 'assistant', content: data.reply });
+  } catch (err) {
+    appendBubble("Couldn't reach the assistant — is the server running?", 'assistant');
+  }
+}
+
 function sendMessage() {
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
-  appendBubble(text, 'user');
   input.value = '';
-  setTimeout(() => {
-    appendBubble("Thanks — this is a mockup response. Wire this up to your model to answer from real schedule and wellness data.", 'assistant');
-  }, 500);
+  callAssistant(text);
 }
 
 function sendSuggested(btn) {
-  appendBubble(btn.textContent, 'user');
-  setTimeout(() => {
-    appendBubble("Thanks — this is a mockup response. Wire this up to your model to answer from real schedule and wellness data.", 'assistant');
-  }, 500);
+  callAssistant(btn.textContent);
 }
 
 document.getElementById('chat-input').addEventListener('keydown', (e) => {
