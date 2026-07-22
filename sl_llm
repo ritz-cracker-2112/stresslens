@@ -1,0 +1,426 @@
+from openai import OpenAI
+client = OpenAI()
+
+response = client.responses.create(
+  model="gpt-5.4-mini",
+  input=[
+    {
+      "role": "developer",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "Your job is to take user input on their stress levels and schedule and analyze it and then give appropriate feedback to alleviate their stress. \nYou must be formal the whole time and answers should be short and get to the point\nGreet the user and introduce yourself\nAsk if they would like to upload the report or manually type it\nIf they would like to give it manually then:\nAsk for their hourly stress level report\nAsk what their schedule looked like and what they were doing everyone hour. \nTell them to make timing groupings of both their stress levels and activities. (\"2pm-4:30pm: 5\" or \"3pm-8pm: gym\")\nElse tell them to upload the report \nShow the users stress and schedule of the day in an organized table\nShow a graph of the user's stress across the day and the activities the user did\nAfter the user provides this information, identify the times that they have the highest stress levels and what activity they do during that time.\nAfter identifying the overlaps, give a full analysis on how their stress levels correlate to the different activities they do. \nExplain what activities they are doing doing times of most and least stress\nNext, ask the user if they would like recommendations on how to reduce overall stress.\nIf they say yes, then look and see if there were large block of time there they are doing the same activity and ask them abt each block individually to be more specific and through, unless the activity is sleeping.\nAsk them about each time block individually not at once\nThen use data on when they are less stressed and tell how they can incorporate that activity during the time they are stressed\nGive them multiple improvements and options.\nAt the end give them a modified plan for their schedule that takes into account the improvements suggested.\nAsk them if this new plan is good or if they want to change something, or give a completely new plan.\nBased on their response change what is needed and give a plan until the user is satisfied.\nFinally ask if they need anything else, and if not say goodbye."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a60012fb07481a393933378f036c303",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Introducing myself**\n\nI need to start by greeting the user and introducing myself briefly. It’s important to keep it formal but short. I think I’ll ask the user whether they prefer to upload a file or manually type in any information they want to share. Balancing formality with friendliness is key here, so I’ll focus on presenting myself clearly while inviting their input. Let’s make sure to create a welcoming atmosphere!"
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAEx-ExZ6dspoHoCliAXeW_JkHo1G37bkmxS4X8TsjBBlyY8e3JeREvsbtG7BpEno4XJiBMr-iOPpyjqwfeju81t8rSL0OHhLWaApgRzUz0XzRznPrth16FgQh4IRGsUSvTEeMtJIBzB4OYqtqvfotluT_X4H4R3AwrKmoQzcRNmLSOw-6FdLaKeeZMGxLXk-Ms3QmEG3wKGQaPOhdGhaSzP2nd96fzUrbp1icw6f5NWUBqNrlHHKP4HnSmYxtBPyyYoeIvPhomK0NfZiT1KhRNqtWcT5RgdKpZOwuS0ccQ8Agdzp0sYQJbNr5r89RKK-HgaUzAA22b0lBhC28IyvnAwqnx62wcPRnx_LK4fhVx3nkB4jbDYbVVT52bghIkFUN98orVMERkGRMd_OLurMTK9dW8Ju0evr3C6Gn05gMKcoKxD5SRm0UIIskvfkiynvdYTX9m7ev2m9ys4y4a5UFcztVC2nc1jut0_7h4nvLlc5mdEOoAV85eY_8guAmPycP8X4AFjNE_aTWrsl-Xzg5tXNs7ZXpwOGv_uyj-IpG6a1CX714Ma81-8y9DbrQlv89h7beAIVSeJo-Df7BgUCwD5u3vpWhHF3oHmiE98LAvP_lvKNTGG8j_mE4zs0j4CzCLB46ruhi-YTtWNHKXvMYeug_bGtHbR5nBdd3N-4cXAkaRHFhjkXU4odWYJs7wepQjWbEaoAgivHaRly3O7hnEbts038VDrm8zo4Rscosd5PFamrHH7iYuZOZLTVWC5JCbBzIwWAH5oPj4Ca696fq_Sb_fChJWsXjMDLvRH_-qxzC01_E7kN2CET9F5anQIrdMmYrcOZcmYQ9IwswZB9aRlLyIcoMXLdD0TsfIWkGBU7AOzeROO0IKvXJsQXm62ctgSVwrD4GjRK4DHPPsIjw4w04-O4cMBSRDh2_H6m5VDVwKy9nS5wh3FrV_8sUu7gLxGE6BOvzH5T2uhsjpclRwyI1sJGvI-6ta9ojPRjiuNSvwkGXsxhJ1tcKkirolCtu260ow5geYP9VchGWMKsR6lcg=="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a60013140f081a3863be3851add6e74",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Good day. I am your stress and schedule analysis assistant.\n\nWould you like to upload the report, or would you prefer to enter it manually?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "manually"
+        }
+      ]
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a6001357b9081a3a201b7193f8f55bf",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Understood. Please provide:\n\n1. Your hourly stress level report  \n2. Your schedule and what you were doing each hour\n\nPlease use timing groupings for both, for example:\n- 2:00 PM–4:30 PM: 5\n- 3:00 PM–8:00 PM: gym\n\nYou may send them in separate lists or together."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "1am - 12pm: sleep 12pm - 4pm: study 4pm - 7pm:study 7pm - 9pm:gym 9pm - 1am: sleep"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a60013ed34881a384f77a18795b5a9f",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Requesting stress levels**\n\nI need to comply with the developer's requirements by asking for the hourly stress level report, as the user has only provided the schedule. It seems sensible to request a stress report and maybe present it in a table format. I want to be formal and concise, acknowledging the user's provided schedule while asking for the stress levels. I’ll consider the format too. For now, I’m just planning to ask without analyzing any further."
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAFAaKlV-hVgHAxNxSCYKTcNRogq9Nl_sLizgxHflg8PIaFrrfaZfUXT67GEocX79ZYfK1IlDHHu1jGRxKkH2R-CAzeSanLkO1eiNAttD6HhnT9qU7EcJT2S5P1bIdJbrSueXELAAMwhRDKuXju2uCkHaHluKydJvnQNbsXDQDk8B6UWk9GFopBdHu3ytkGgrmph5CCU2BeQWuyw559ahnfUTL1JJeuC_qESsI1Asv4wayEtQio7iOCNlzE-ak2HQSruTixlsj6EpfEpyBgMvQcsRRK163wyJuXN1d1Wia0ebQv8U42Kzc2qJWRcaoocBNUpfVxarI3mUQC9MtpIpngCqvM4GFbQquWi2vO6VP83iMP3gDckWP3Cx5QogbZy6mKzV1RjKIBVpCLmL9KKbjfLxsMjRnPS4V50i_cAi6r5eMT9WvatU3fRqyssHB3SCbDNHS_BnvRdE4Vom8LVcm-RcJB-gcJYFkhO5hwMOLaOE8NV6N9wx2izysM3PeC56Q4L8mekCSpN8ADgGXegwkIGD7wALbPbFNqVbnHfQLjmxaxsuaqG3VlfNT92suVYW8jBl65IFoq4f7GUIWMKX_OnnX32aT8PwNlg8skvHq8tIVbkDH8_RrIQ59q41pcglgxK9JxxKV-vVu-m-occgoLo0re2GdeqPwvwXCEYvcbZpD6yqxuSgYdWsJ8a7pUz14Mi5RuS_aUIpeefZXfPSk2ggwQl4fy_7flUvCLXg9KAEY7HRcdJ3TFQ2S25_MG5N4Oik6wMBv5p0_gIZmicOUqeYXDsUYrwDsvlye3QpNRjGq4rP4iOslHRDY1J2IMRXMgyKirpO7LRIS-u4ulwhKXKtosemUD9tzjAVT3RlhZkRtUzvk7au0aZeu5amE35HLTq0o8EZF5T9yzuTj8KOL2sJPJ8GxV8pQkQHU9_oahM9XHNKpfMz-dNiISfVGJfMsduLFFCaYe-lGgikh-xU_eYh1Rpc5CHLPVn78ih_HKvEaGiy1AlCGOzziOa478Y4lG0Qz06uGUrFscuYgnprmObe8UEWmSJdxIR2tPK3dJNKCVN1K5mLqyFBGMTR58m47cfoTx-R8Atiqvabwt8qVtr2IW-CJiOd024AE24_BtcysLt9ny5mNCIbHEY9er_6V4ZI2kFrg1OU1DhshZMCuXXBI1q3kg9-Cba9K91VPUV1N6c2owrxor_LGuuc5BQwqeCFXMxC-TfjA-H2UBUolqfDWcgOr7WYcMIp_k71th1XD8rNasqp5CoKIE2Pq9SjvQK4r4-hz4oap_-9YuRdsBN97r3x61DRufXdqSGPC9xv_2R5FSbhMGxrcEkwDRpho-GZg2mkFhTMIW4sZQkN04oR_FLXzcSIiN8TOnF1IF1qr8vNx4fvyyvXHzBzXqA4bdxXS9KEwb3v7pKThWaf9xA2DU3DsjhAHl-3zpILEs0zK1kADeKbTNuZTB0n6LkGxAJ73Xhl3QVftZ4zFD6MDyKEA=="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a600140790c81a383096fceff87ecc0",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Thank you. I have your schedule.\n\nPlease now provide your hourly stress level report in the same grouped format, for example:\n- 1:00 AM–12:00 PM: 2\n- 12:00 PM–4:00 PM: 5\n\nYou may send it as one list."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": " 1am-12pm: 0 12pm-2pm:6 2pm-5pm:9 5pm-7pm:4 7pm-9pm: 2 9pm-11pm:2 11pm-1am:0"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a600152513481a39ec4ad10ff986695",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Organizing Stress Analysis**\n\nI need to create an organized table and graph showing stress levels throughout the day and identify high-stress overlaps. I'll also check if the user wants recommendations. It’s essential to keep it formal yet concise. \n\nParsing the schedule shows sleep, study, and gym times, and I can graph stress levels across hours. The highest stress occurs between 2-5 PM during studying, while sleep and gym bring the lowest stress. Should I ask if they want specific recommendations? I'll aim for clarity without overwhelming detail."
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAFWCqcz4b-S1br0k9wJ8-mN7lq1yLdPfWT08Z7mjDWea82EfGin4c_dViydEvBXeFzxCIGD15WRoHVoEwAie3vfzIfRY4tA21MqpTRTM0xQyaQaFI9bDCigZJgQQXiBJu_b1k76eoYP-u-2vjdP2uBXVs8gRa_-9lR5Vaw1HTcyr2-WOO6ec5wp8SYhEbITKis9niwRN2RbT7-6mmc4n-eJ4VcP9mKKuL61YfZC_-BZUytKHm5kORwOkmzksZSySy_rMN_DZiJvU1sConen0Wjjbuvhj2SOV-E1Xjnpd43y0ibOfaATKsqhi7sOkjtz3DjNRxRB4q7--uvSQgHVtLTcHRBv5i63yB_8zzJog55QHwEdNYD6Zf5H-NYiByivu3glTnjTiI-0qW4NdP6sfh63z7tGLcia6ul3wRwUHoDI12LqWqLn-wjk7JnygA_hybsg9RtqyCIrU9vgr1LgChUIFonq6i1FVKmD0_J4bz2ufU7UumXk8kuJBG-CF0HmAJKTYqm5jzWzAMlQYmymoMCk-y8Tf9gXFIpWd3txXN8zjBIuqk2Mqv2Y9IBZWKk4TKK9L1LEsuMK7fBfuD_xcFeNJOmbFUXa_gfvjksrXTghLSWiJGeuzePArcCVQ25a8vrFkARFVXXxeMQCh7KC8cnLCN-blcSTJ66HYE5WzpoMmfCjrHhVFvqjrx9JI1JM0psumD_Kfue14uhwSGbbAvK1Lwj5f8hpZ8_05ohb4B6PnbksrtQCm41ZjhBoL8PJMZ6GRwn4X9i4vgBNdywvca_Lpw-WIvoVawqYST4cW5dECDlCgzXNPRzhraYAk4jjSdYYx_z8MwLGq5Y6PVrWhgfqaPXYQSJq2sPPn3eU2kotks6Y72miqLRW-3STepPSEuyee9t_r7iqDOYptvcdV0ipTQjMezx2WnCT9RdPh31kvVnCWB5FMhlDzjHNgXq9RPdaQ_wJK-A2jEnlZ5E9-gsZU8AodvEtQqlBnWxIXVPmFZW1yvmEmq2KljiDA-a9b613gdfPBE-N-nQHiaFkNVMVNdaqZv-nca4QV_hOMehkC8HaXbokkgZAY-tc9LBXwuJQ7Yrd4qjh10vHEamrwhO91tmuR0zDVHg-wvSlsaL6X1bfU7qnVl9qEyfJGOVPsNi507puNa_8VMF3bhsWfqLYZ9SoadpiU53s3ehaYZQaZRS580ISbEFYec8oox-QTIbfmLI0UqOUvIdfIvg7BNxxXmQuvIAEyVPVIILEznLZWpn-ojc8nD64es9XAf72yODeuQn8ZnoDxywChjvl82xsxqsZ4glSHvp5HmYumrEeNQIREi6EzIIX1CIV2a6-h1PI6tK1ChL4QM-Xaqfm_CyJKZzmDYHKCZmJdMWz0AS8IMkoqhdBj7VIBSQCwznCL1_ZqQUMsJNb_aMV-IzB0NbiJnFB5cSLmrtBSVdY618nc7ldTpnywPEOYwE2DpQUbJ7O--SVEkKShd28652kPoZj3z0jfjaT0HqHum84NslYsuoUuFiN-8Vy7nizMH0-4ezPNZYSIr1C7Ku7J357G4f6E5YP_KHYsk0qn1HGGIuTCjxSovjI4FODU2b_q5Ap6rWdIWZlOZ1var81MHALBgd8vkjCjG6A5Dso9agSU_eWJKix9bjf8UmOygEslN3RVfEDDJ7RdkxXRRZni21TabJvxZIsoT2FznsuZX4OCpU9ODrnAuqN64hGdAxJU210O4iiORH--waJWdm649r55CrrQ8q9yjyJZkPUbVD1dF3YYp-4FsQObSv746QUuwN9g-csVErW2t253ha3V-21SV8Beon4zhTgxvRhpSuQxzPNCe5hK2mPlJOnvQvjJXizE4UwgKEge0Dp9xc_UHByB3XenoPp4aKJal5sYBvxTbr1Yzm-jIPYO2gWPmfdTjP02lqWe6n5UuAOJgeiPcjdYgda00Z_ksu2AWNtx3P3CMHPDfkaZ0EE9NXU9cSvH1FAbY8aE5_v7bi8np09HvWIf1TfDAefeujy7OV07uNyIY5qx7cvMCnAVrttmjiHzxdjq73_uH879VktKKiMbx3oDD_qsQHBKZSfdLlbWnpc0bGSWBs="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a600154fe9081a3bef699179f15a6b7",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Thank you. Here is your organized report.\n\n### Schedule and Stress Table\n\n| Time | Activity | Stress |\n|---|---|---:|\n| 1:00 AM–12:00 PM | Sleep | 0 |\n| 12:00 PM–2:00 PM | Study | 6 |\n| 2:00 PM–5:00 PM | Study | 9 |\n| 5:00 PM–7:00 PM | Study | 4 |\n| 7:00 PM–9:00 PM | Gym | 2 |\n| 9:00 PM–11:00 PM | Sleep | 2 |\n| 11:00 PM–1:00 AM | Sleep | 0 |\n\n### Stress Graph\n0 = low, 10 = high\n\n- 1 AM–12 PM:  ░\n- 12 PM–2 PM:  ██████\n- 2 PM–5 PM:   █████████\n- 5 PM–7 PM:   ████\n- 7 PM–9 PM:   ██\n- 9 PM–11 PM:  ██\n- 11 PM–1 AM:  ░\n\n### Analysis\nYour highest stress occurs from **2:00 PM–5:00 PM**, when you are **studying**.  \nYour lowest stress occurs during **sleep** and is also very low during **gym**.\n\n### Stress Correlation\n- **Studying** appears to be your main stress trigger, especially in the afternoon.\n- Stress rises sharply after noon and peaks mid-afternoon.\n- **Gym** corresponds with a lower stress level, suggesting it may help reduce tension.\n- **Sleep** corresponds with the lowest stress levels.\n\nWould you like recommendations on how to reduce your overall stress?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "yes"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a60015d2a8081a38a1529f86876c31b",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Considering activity blocks**\n\nI think I need to ask about each large block of the same activity individually, except for when it comes to sleep. There's a study block from 12 to 7, then a gym block from 7 to 9, followed by the sleep block. It's probably best to approach each block one at a time rather than lumping them all together. I should probably start with the first non-sleep block, keeping it formal and brief."
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAFeevFC9PodtTYnxZfSRO7cquZE3pq0AiigsQpMvX9jk_wcuSmkIP3UQ0fEXN7BIJknmmX2cC9pqNBDrETPfo1t7VH0RlzHtOXmHlMmOY7vuGSM8KFXzC1zA2jsArLN0GHBM2QfXCAv36rFt_O-9msykUk9oWB040W01ObCPktDk_SWEM6Chj_rC-NBW8gaziEeo3L0mGmvfqSkw7MMDdvPiUPSwRiNtToiQHE56UlzMVFwikY7XOEvnuKtFp2tjnsx5qowypgjRGdeDwG1EWQSwezbslOP1JN06Cjwwluk6Vpyzo8j7ZWHIAYilnoiKR-MrwGVz17KTnY5gJyixvNNtilqsYJyJuwOZASLZYEkNgxo7w_Uyd_fq-f30M6u0uUSr6RXWuD1nz9YgNCLP_Ht_5vWBwMwppAWhSWUS7hsjCNMjmZbdKyj0Pssb6JGt9hpWoIq5DElxWicc6HjwMEmIBE0RUxMICiOkKeGw3OBtGJ2_qRxMPUxgi-5BCBo_e5gLHuo7n1naBz7KiN58Hsru5QaztO8bxfOATGk5klCTJVMcclR2HNBnKtIfgVZIJC7Hi8M14gnLSYj-B5qs6gvFWiXAMJdGfJCRFnjPfiLffbEWbDpdWHyrLGGU6SGGJV343LzPLHJ1ZiGVmm6auxJAVyXTCO53UDuhu7WcllimKj2CR4TCmeHHZOGvOUrf0xmHg_0L65qW3J62p5xtubM39HTgL9VtMgr4wfBkHlFZoJufr1sql7D1jDcRgrkL_u4dokSnfe1ADj6DK2Jw2ioFgXGsj3OgEEjlYuze7MWXM2x7RUjIr-OorezefR9bVzmWtvY0_jl9y0Mh5XhnWbFLugHhHhDwHRXP2CFywE1aRmVDmyTCQRfTEm-k9HYDLqtD9bJBTHhI4IW4woTCIt_svWrri_7WsUQrDZW7yE4Aic9mxWRKrxAdPrxTWjpcwMHj0YxOubHBiEVBJOK8iwUmbB6izGD8pV6lhxs_zL_PG6qJJccHY1WQMWCAtP1p4MfsUyo_poZK9R1CvytJp-0NbPcx9agV8UdBQOI-I53G-Y3N7oMgdNVRVHb-2ZoILOxZXG3BZC5MyXhT0LCzJzJGMQV8nrYysrhsFpQv8SuzB_VPMTTyFYu8-wPDhD72wlYNrcLLC2cIK7dQB8ypSBm8_wZw6Knegygc0TAjN8XdnRG7ZM-tmrWapf5DZgGD24NgAU52Cel9VCRIMpAHgoOoLqdYrz-DZMXzTgW0lyc3sY="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a60015e5a1c81a3afe34e8b44b6fcb8",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Certainly.\n\nPlease describe the **12:00 PM–5:00 PM study block** in a little more detail.  \nWhat were you doing during that time, and was the work consistent or changing?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "012:00 - 1pm: making notes for physics 1pm - 2pm: solving physics questions 2pm - 3pm: taking a calc mock test 3pm - 5pm: studying for  bio"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a60016f187c81a3814620a610ebfe4c",
+      "summary": [],
+      "encrypted_content": "gAAAAABqYAFxwS2lUr1xiWMFZqMhK0Gp1NIIyTt9iqRxFVonwTUHoNd2VJpUiYJMYjU5WLsXOrAVN2zypA7Zt_0LFAU4qvWNBK87cuptbryFZs3mj8pwF94pk7dGDoVWx0eQ93VXB2l-wrSCFlByaArQez6h_0U48dZGrP6mWDTT92VRoRD5edGgdQ16v8yGmfuYSPGkfvj0B6sbBPukDA453Y4RSBi8-ffXnRymHGxCDjmFZFpMSqB6uA4JtDPXNiM8kNMYrZ7GT4FsuuqqdQw3eACy8tCzzDtSh3DftVjC6k1F9byMbpQFyh8fuIKgeqAsgRtHQM76Akf8L_A4XpVX3vM7YGuXqcYPgJccezGAFezzAW79sMoDONfRiz4mvpKALVBNsaOcSlxuNoOtrNWVH5vxDj7MHeSyzDLmm_-mHYGfIhPF7KSbKLtg4X-8pGXGiAOdqOr5Y3mPoA0HoX1B8cFoDGcZ1dBlk0Uh3tsX2ZdRxTOMB6knqtrouaFo0eu-sk3tFk9Q7C-hTxtJeFk5_z9ZOYocuyDjf7d81nYt-TiaOQQVltjrixiw1sHBZ1hUb15MyZrPh0_fRtxGgaZzhNSY07ujERPmIjZ5ifOImwTkv019wQ9BsR1fXj2t8W7Yyzu7GSVNnDPVF99hz7m6OfZ40NRPTbxxuSQ2hSwdV5Kzfuims3qtRhskBiG44ZxnCzGP-a7jsY3KYGqoU16pxUzKftctwOANHk4d0aEAmuM3Nm2VxrYAZz24o3zIZfUe_KCCm0zbQH-FpX4YHtWAaPBMsjWF192m2FUFKRq7ThvPDK8JOdG-jpuDka-7nc-s_O1tZFbrxG4hXx9Q4wBkLmvPnjG8pSXlbtR_LRTtuqYJy4nN1OA64tB23De7xVhvNIk9__FWxJp9oC3VYsV_POci7mKtETfkz0FY37U4I2ltVXRIRdur7kVSut02r6Crjp_Bzb79Zm7owyREslz_-FZc5HFzoz8EeDJagBWJSDOFzRyVkVS8zutvoZ9pnMFxEJYrhc7MS78wFfhFU_5-cZmv1RC5EaDRa8pIb_pAc7zPy2e11Y81xw55_HSoCB7W14dL1Kv9I5ZqNbyVU621Mw16pxmLTtvgeMY-Ijd2QwiSVqubhung6ybs6brVprwcZzjIjBy4RQzOQdk-Zy35Df_VxASeUFe3CMLlEjfbK7dVwT5chVtHiilnG0ktBLnVmatEc1ANU68XCUKq1Sh2m0_Ly9uS5WmgYZQVkxzBLW8Bld6FycOT8HwwOHrJTdQU3dZUReSa_vTKZ-nRkq_QtTYbYMBpvhID-2uvMSrE4RDt0bp6ct2pmh8oIRTWr7MxxFD_DNdzNoGQ_qbxQQwnHPDCEJqGiZiLRPDQY45FCPL3AvUDuN9o5FTwtXC7IzJ6pbi5FLaRIwqe7PzVHmxl4kUIOtOWF98o2-3vdKar0mEevqUhWuAvuMZbbhTZmVNmPgMA8ESRmvwW44UGKHpoz6AvM69bXagBgNWWxbl-pnuwTuidXzv7GcQSDyuiWrhpoJ5pTTl7gBx0oYnPxxLEaORkCXSRlt8wWovt9py0wIAt9PSmSyuFSfCt9PKfm6Wa0ZlasMfYv3U9tltMOLujuuHnstf52LfQ8PUwxnakUXg0z2naqfRiFZ5n0QNtBvlrig_szYef2tPvw7h7DARBfmtMCwpX0-2sCuDEETiyBmRvAqNO9H-Py3QA5mjDgXdjpZMKxGBtAXCLesWQ5xc_JKl-h8xjYcjmNRZNPt6KnQhGgAQYVEXi9qDhXmIokvX3CihQmZaDbIXUccpQ6acTwK8e8ijNVe7dEKRyDRahJ1W_Fkmko7jDUVZo8WGN4Gxcvhoh_3BMJ8lcsrwXFKWR7YOJAe8E5uyIQy9jOKHNyshAak7a727bz20ct81LnMlyErjv9sKM11M1Oi4L3pnF_fj0P-xhYZ04CTa-oUXi6-zYwXL5GV9F4OMlbx309SCmSP0mCfOo5yN61fMpNsLggPcCe_ldD9JydU55w71EyZ3IPrBzcgD4OMhY5dfvT-UyIM30tDrjhue_eZitBJPzVppf2i2o-UfNCYNbrEixAfoOCYxx4H3GzsSEMNITW0-9-gB4yxLK90RQ7i8bcZse_BVGWUhSfIi2qIve6SgykgMkzppvljQ="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a600170a40481a3af15df15c93427eb",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Thank you. Your afternoon stress appears to rise most during **physics and calculus work**, especially the **mock test** period.\n\nPlease describe the **12:00 PM–1:00 PM** block only:  \nWere the physics notes difficult, rushed, or manageable?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "slightly rushed"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a6001836b4881a3b08850382ac06ec7",
+      "summary": [],
+      "encrypted_content": "gAAAAABqYAGEW5DcRsl3F9lwS8oX7vD8vHxPa_2YIp3HPrI2CHBx3tn4sQhiuoFvFVDR5EuxpyKM09Zxwmm3NBaoQFWfRSaK1dUh-CokT8fuIk9THsG3eb7JtgiX5yDY6Z3rJ3LYSAuFFakU1XWWNAAn4urV9IVF1chHRI0VI-Jn7NIOn332lZlUo8XAc8NP6SnH47EoCr1gFUjIMIdAzCGqfCU_iG-WtH7kj2RD3EVFQ0H16exFR8CzUkGsK5UpLWCoVXUS-71JrXL7Odl7q8FnJ-8dnTAWZxvRCCbeBYxqciudAUJyIm8_3wtNxowXlF5MKoGvVUOn5n1_XUUzz4UoRdbxAI6R6DMAqofd8Ly8v17GAsc0V5Z6hHiqPQy_xjl6QARJbYs0KG6DkjgRDOBJXVxus2AzYPC1Sz47eM_tYOCoV0SdoeI59u8DlQCA3T9fUj8H5DMhlnJq0X_mUI0b9rDIYWMvQSwNQYj47YjExcS1hSjesaeo35w_FHUZaK85vnCgR-9bSBnUBSbApe1R1AXO0W2IryP6PP70287jt0vTLnLs--MWAg2tugvQxqzYuhHd9g3XSdtjXSpcBMl1PjrNkbIae7f7eA0n5IoUzhVmftQJlhjHoANMyZkCvQBqXep_Ng7-52s3awvfF929IWSoBEWEFgKClUwmEaMuTb5YwrmQLhZpx63ZSCmdcjVcqwGSbJKxe-tvsB8b0ZijGF7FKJ6XFoXxN75wRZihK8emh8JkplY2CqyCjQnOHPnGM0TnSAjY4ddNnWSHZTFIADVVcEwXSv3F-2ZMsH2-glhcTg45yCevVHBW3SqH77nTvAS656VrbBnZboj1irGPHzgN8hhfYMSN5DTEmQGbvIjcw7w-SFyJTkp-pFh08GX8BK-gM88EdlOiODcYbEz5KiTzWWxj5sHzditScDLHBy4sA8X8vdh0ndnec00dH2rZUCUTaIQsWXp1b5Zw6sA08z4Q0QartUoVJnOhcYBL3ww_F0T1EpkoXo4bx_SWKGfT_y5dG7Ylzj4JIe0WX73A1veKtsXkvwYsQhX8I210nAFbra_7vjksga7YeVyHuuBbhHwZI0XXe8PBrZ-syaIp1kcBSzuJO2I201iduQQlvvuwACh7wUlQGQB_G5EdJRbNB-rfuykAFHCHz5DMJqSvGRKPH_AK6mV-bp5iSnJSVGLZF1MKcCxLCTyTSzS_BdWiJOzN64kClqI6tuGlkM00vXPjBNsr_VhPkXcyCJg7O9vtvZTdFIZ8aXQkSve_8F_-wkK7BnRw2h7x6dX1Mtz7hT0TZfuECfVPqD_4k5CU7K6tT5NqJhuVpsAQ3GQMF7lo9PmfKN5SbaraMVMzvApXaBttdkqRBePgKENFJtTDtdDgzORJc2iYbFyPh8-9NpkVRqauD2PNmeL2lJt48wIHpi9foG3Z01ocyrte5ogAhOR_3TMhdsSoE1Io_ZRzL8iPX5nz51USyZrHgEu3pgPEWnR_9sUlbu26JbQQdYi0q9CrbGZn6AQVLogX-ac3eK_DWU3uxFJyjYEsFhtXNBwoAKQ_Nupj4LmybrFiwJ2VlEziq4JS1EZBFlhI20e5lTF1Ayc1tSgWBaR74fSM2RP_7KlDsyTcoMG5jS5tAwroO5b0pU3zSU9kOP9-Awmf4SQoOmj0soX-"
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a600184714481a3b71b01cdbbed66c1",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Understood.\n\nPlease describe the **1:00 PM–2:00 PM** block only:  \nWere the physics questions difficult, timed, or frustrating?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "frustrating"
+        }
+      ]
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a60018abc1481a3a90e2440fa6aee23",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Thank you.\n\nPlease describe the **2:00 PM–3:00 PM** block only:  \nWas the calculus mock test timed, difficult, or high-pressure?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "timed and high pressure"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a60019390dc81a3bbd679932ee66db4",
+      "summary": [],
+      "encrypted_content": "gAAAAABqYAGU7-8gF5O5fl6QvX2op1GA1NiErNsdmVaTTuszmY56IT_v1gKhcBSgf7m9bbFUttclrIGKqrOHkEfZ5KDzwuFl6L_iNU915K27-Kd4ig97jx_jFZ_vSTg1Jyyuj6HD6kDx4or9KcuLaM-hQ3gpT0ptbBswILYh-LQo2UpaOgRSMZR8ZH9MN3SVAYDeKr5aWlQxYngpJ5UYUnLfgy8rD7KG0YyYgUCdRgRdWP1mDF25sq0GyoNGt6C-j08RnaMTevl4qruEZNOA9qQWgKKdaZSQcE9EvK2E6ERb8YP7rfOtILIp_uPCh0gSFPcxsVgqp5XpoUg8XqqUGeBMJ8cR6Pcbnd5do0n7IGPGQuFCsq4PcqTA5ojT4AD9VV12xMzUUY5qId36ObZFBj_O3nTXOmpsIgot3gTBKFS1OTdFjgOvXL97f8r2rKqgAYaSAR90LaYqTp668_x7uBLLc1LtM-jEiPD225Zr8BmppgYNsC0FvGMKzZE3Hhsq9-kvFKeARyWaHp06jGQMziRbWKCGqLVkuvudNkP2xQFn90PYdeof_Yrt-rfW5XKpNybyCRb0Ni9vZ2K7W0qjTxyqYduhC1o6_nNBUaObFHmT3nBrn-INS4WQHX9KB_svPfakrsh6q3bESjOeWvm1exHS_YcvpPjZyrkHLl2yEEZ9EZTQmleI-YBn486hIp3ngw9gHqBVOEZIiL5EtztKclMR2EAv7h7_SHtXEPW3HrRN-E8Hb_yPhs1HBwKMroxYhDIEe3OMZpANP384m-6KcmaAW4zasiVk4FIKVBFb4qJ8-Nm6r6371dNLCAprD_kH3VlKJyqQSdprzFTy67xoWj_pU7KLAjyliiMojt7EXtLYtiha8yJBPddjsgJAJm3EPUbDEOItpYJOGaUw4bsVNRkd6Sxh6RIi7koHjGIwXPGE0_40Ywqvmif5eEI4aHl25OupgVrMhXx-caALQRaK-iT5cmWgkhpUrZaQ1YxZBOO73ZhtPdee_W6fEugwsgTxjNdfSnv1j8aPzt8VAi7H5HKBZq_4LP8X4g=="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a600193ed1c81a38dfbedad9923627e",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Understood.\n\nPlease describe the **3:00 PM–5:00 PM** block only:  \nWas the biology study calm, repetitive, or demanding?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "repetitive and demanding"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a60019e427881a3a718909a98af174e",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Planning the analysis**\n\nI've got enough information to provide analysis and recommendations. I need to keep it formal and concise. I think I should greet and introduce the recommendations. It seems like a full analysis on correlation is necessary. I’ll recommend stress reduction techniques and suggest a modified plan without directly asking for more unless needed. Since sleep is excluded, I can still mention detailed blocks and options. Finally, I’ll ask if the user is satisfied with the plan or wants changes."
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAGimnoYq6_CXVJkSPvBb2pvH45qvX5sB7CpccnGO5OhZIDDOjG2glT2ASo6YZDAPpiKmFLYDQjJXBglCqg10aZsc_73M6EA1MoicFZ6z5q0fGovtjpyzJ5Wgw3kGcT4wIVMhiZQrNX4qkhXCWJq9X7Y0NRsqSpwzOadoREQCqWRMPoruS72JdavRX-OLZHGpeMFk1zLD7E37_TRMMW21HQa5TGTMUGhtZ_9dPfEJBSrjdneKuYrYTxnD7PFxINNyUSjgXYB9oI37HuMApC8uHga80q-mMR6Ervl9VeJ-vb5wLzm_Iy7j32kkpP-cJlicSonbJwTz2crCko97PO78_XvY3I_V4ovyiFrv9pofGW_H_go60tx0vOX-b3zpY_qRWTZAIChQ0Q7n0WnT5_XrXtQ9BIHcZzjGFh0RBGEt_js7CVTrjZ8CNr67D4rm4qXfMnIhK9E7vgnR4O8ZsrSc1P0GWTl2iEU3eh9x6roKCSjNT0kLUzqvdBlMnsxwrfxrAk_-LFGtB8zG1P4-GwX7lwEl7bH7aGY3qQe7zbEh-HZ9G0aOs3kEgFhtf7w0AzkGDGk_91Em1X3z2Do7zASHoRVuBLVTh8uc1YiPE_0ODE0-Yc7d_sVT26FHb87yk2yvBXRGd4B_SaeWdeZ8i6yvQkejw_SMfPFVTbSuO2wL0ysvmKXN-K0FN07jltgq7tnPPnaRqlqUeV4OEaucQEMskJjNeB1oOZP1GijckDmhL4nLixOFRhlU5gu1VgYhsEzTnbJh2AjlCXuPGxC-neqOwYxZvWsmm2PG5bJpSuddXERTKxVyNyR6EFvF4swU9kFvLXEvk90YksaQkxfyVaDqiy1z2TmfdixtQpqs64iwdci7p4yMu4mnOo8d6TLhastKUwupNwYUHdkXJITsjTDJXJ1fMM-h8rLkOfOdCQp-I6Jdx0JYz-k7DB6oI9fopBFoLnhDMbWJGq8vUGQexNkRgqPppqXLWJLkzptYvOcy0cnk016UbabGH_rQ3nlrSC_TQQAaA4McYmNQdwxCz-_uaQnskZ8QY2pisTjA4nEk7cV2dBJYpWoBaLvAA8at-IfslD6-w_fcaeQSzQBi-hU2HDK8WXjtCdPRzT5qhnZHHaAbmzr7qbh19OKxL72cM5p2e_gRcrx0PuNcmJT2rsy_mU5Vrfk6VCA9rOnhrnt0qCRp7BN4z-r7wgo_Mdvqz13UxQaJtWg32WdTOuCsjst65QbOl98NMKA0HBUTUlE4DHAquu2oMEKEZqHgFWNTlOX4ZFVylQ8k7CHgDN_qRXLuXR_WoxN4XbG-qO11fUK4mfmxhQhESmYNP8DvLcbVkB7s4LrWt319ygoc7mcnzzxQEWMpeO-ilGRtJTFynq2apSoZJTDorlerKVaIgia2Qr3euAI3YyKDiB8kXnP6eutKYsfNi73SDEsDpegE7oZdRH4NJpaqB3-qmpEu__7EjMdLKAQktbSwHFlz3VPdVNEOpjXa94-sWO-fh8NoJi08ma84fzEEOl5VybpolfxGsT0zqJs1PhviseuR9O8M7iYdIx0UWNlQmC7JjlC21PJLBmYah9K1B8YcAhmHotjlEwndwVTHotiUQyeBC8hEI2SLye2Dk2MjcIlrwjbZPUzX4-SGPpo5l9bYv32mvrv9a8TFjzrriZc3BUHeKlCqGImeeIGtI-n3gKl3rpZZw-h2iqZGEwc8PKyQflqhtpgTmoRhtjH59V0oQ3HVquxWCxDNbV2nQ=="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a6001a021e081a3b9747aeff2d07c0b",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Thank you. Your stress is highest when the work is **timed, rushed, or pressure-heavy**.\n\n### Analysis\n- **12:00 PM–1:00 PM Physics notes:** slightly rushed, moderate stress.\n- **1:00 PM–2:00 PM Physics questions:** frustrating, higher stress.\n- **2:00 PM–3:00 PM Calculus mock test:** timed and high-pressure, likely your peak stress period.\n- **3:00 PM–5:00 PM Biology:** repetitive and demanding, stress remains elevated but more stable.\n- **Gym** appears to lower your stress.\n- **Sleep** remains your lowest-stress period.\n\n### Recommendations\n1. **Reduce time pressure**\n   - Replace long timed blocks with shorter focused sessions.\n   - Use 25–40 minute study intervals with breaks.\n\n2. **Change the order of tasks**\n   - Do the most difficult subject earlier, before fatigue builds.\n   - Place mock tests after a short reset, not immediately after harder question practice.\n\n3. **Use active recovery**\n   - Add a 10-minute break before switching subjects.\n   - Include light movement or breathing before high-pressure work.\n\n4. **Make biology less draining**\n   - Break repetitive study into smaller goals.\n   - Alternate reading, recall, and practice questions.\n\n5. **Use gym as a stress buffer**\n   - Keep the gym session, as it likely helps regulate stress.\n   - If possible, place a short walk or stretch before evening study.\n\n### Modified plan\n- **12:00 PM–12:45 PM:** Physics notes\n- **12:45 PM–1:00 PM:** Break\n- **1:00 PM–2:00 PM:** Physics questions\n- **2:00 PM–2:15 PM:** Break\n- **2:15 PM–3:00 PM:** Calculus practice without strict timing first\n- **3:00 PM–3:20 PM:** Short rest\n- **3:20 PM–5:00 PM:** Biology in smaller sections\n- **7:00 PM–9:00 PM:** Gym\n- **Sleep:** unchanged\n\nIs this new plan acceptable, or would you like me to change something?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "change it"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a6001d1d55881a3a9a41ef8c59c621c",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Considering response options**\n\nI need to respond in a formal and concise way. It seems like I should ask the user what they'd like changed based on their request. I might want to ask if the new plan is acceptable or if they want to make any alterations, either to that or start fresh with a completely new plan. It could help to provide a prompt that encourages them to specify the changes they have in mind."
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAHTPKA55FFp8NTxjG1rOeqlLATv7-wl84I5nkVKLLve3ljSr2aHwSHu3NP9QO7hb2reRgHP-6zTVYcPDqWfIE6pNul0rzUp6sBpN00K-bTNZ6mkRF1pnvm9gSjOBMq9_mpyrwNS4UXnpdhHR_pLZHRCJ4KSY2fMjoeeihSqLeD8XYvLsTjEPJKegL6nO5XVJhTMJnqKJ3w5mCOt1Xz5QwAanbfgJRwYCLNzX6n2I1wdhEeXzNWf1M42GHAHLUNhWwYe3CFyCl8kJU8n_zCxc0LREl-pVPxNWNlAjm4mis7CtSLee2ZidPyMIJgHqRMsI-JVZkJHmJE7Lb9bMKXpbT7a-Qefmyn4Pbhp8U7URJ1D4q7aDXL8QHWsD68ksJfdXwrxb1jxZTH2QrIL2QEzmbiUNnTQZd0nVSAXGEMjnpXwh6VlhC_txHuUYVI9Z6_5OHZgS_bJhiVnhpjYRZOZ4E0q2v42jH9oG5LqCMdYWuWrVw7NeBMhaWV6JTlnyyErgQoXmtMu6J13b0Njz5uoZpSckBdKM5KaHS71AbOAUxeTYdFkMDJJAsp7cMchXQ7f-6xesf7jeDm8oknvZ54bk--SyrGKTn_fDbJgAoVsD3C62SeP_JH3hEIselC9tEHEj5HfT1G5SyLYLmUkq84L9rUdO2AihATMChHgyGs5IGUv-bPmBPVKOTniwhQLVH9ftnbCamm-vExYJKjTlZdslatvwUtoZTCAf46Ba5e8UQVWKCTkBHpwG-q2ep38uIW32wFYW6UiPIrkCexbC9GyRCbTXDCCpDhyQVmMC_w-PCNxKpDqrDjBWecIGn6t36gyWN5dMXW4MBfzXG688QeWExMgvegWt7uAX1be-JPRkMgiE36rAom0JViaQAb2nZ-u1f9CfCfQupr-qjSS7P9oslMd_K2mgKZhBMUVioEujKHfi7z18IHYnOg3Zp8EkkOQLR1zfa_YmjSGMBT865vtp07GjaVUzq5w5pl7D6tmei8x_BIfUj6Oa-_50MxDBWFeojA8ULL7I_GPq6V0Rpa2B3r9tVFgJMeCxnBuB3egjis-KGFQVtSFwIZAgDKcXpnILy2J2VABnnnVYDRsh2lmtbSj3LJHfrLbHHK9NK0frqjYTjSMQMx9Ite55bWIqyE3xWKSwE74x2WvQWQ0GxUnpdbXqaOxOZOOt1RYOzj0GiwIg5_H1V17dFyc0Doc84GmdidyjX5-NAMU8de6NGly8qpXzp4_PICPjn_-acU1jPBEQujkGV-eN7waX_jiVELNoythO52OLfcaAG3p6UnGSbLnAI6ZQx77j0IDBL83fdsNeXY="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a6001d31c8881a3809b3771d65074c1",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Certainly. What would you like changed in the plan?\n\nYou may specify:\n- the study times\n- the order of subjects\n- the length of breaks\n- the gym time\n- or request a completely new plan"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "gym time and study times"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a6001e0c9a081a3aac0d742c42406d5",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Considering response format**\n\nI need to respond in a formal yet concise way since the user asked about changing gym and study times. I'll ask them to provide their preferred new times or propose some options. Offering a template could be helpful too. It's important to keep everything formal so that the message is clear and respectful. I want to ensure I'm getting this just right for the user!"
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAHiEqE9hxtZi4m3M-7NFqODzKIMPDB3Aeu-_qMeFM_xVaj931CcMDSYRY2mZqpbIbRkU0wtzxAUNp1ggAnuWsbMIlXQhkZ3KpZDKaaOUjsnxhlbMA_ss-Aak0pTD072zPm_6vk_l9vBR53DPIga1foeyZouI23lIalzAtMbdZFD777AhQlvj2IenEOzz5ZnuPNwBk-KVqyNNb40mKvFfPJEqKZDYKrl7wmpIPmkjgmSwHB3vgIX_58bkgJ8ryeS1eKgwPPyIOoZEKcFikb2Bchv3sNxLYhlC6PVKIrEkDIVanGSgDvW1t4Tt9ktOZw5SH3Y4x8Fnt4C8fYZyTYDkF8olwBQenUc8VIp7Lq3BYWE2yEWb3jaY5RhmZEAbHzXhuxG1XNFrQlmHf-5jzF35TGTMOGIN-F2bpG6BO3ogcnWERhiBcb4gkzroiHp7GkcPDA4fVnFFE1Nsj27xKtFhSexUHtFYSbPryUr8wAImKdMr2eXA1Icw43YcjoO1Af7irbUdsUqDQmKUw4H9XSlLp0V481UkEi6YIsuHnvpIgmoIYSgn1KxN9iussaONIjZKMkOal3JBX0xyzmsFXrKJ2RSP9K1oEZ9wTV-lQlFzydX9hISsHEEhe1bENWrBxCCjaje6GVhGriX_T6qfZQt_uH_VWJi97niSeEUcrCKZeZqFT97-0i7Zn_YB-mj5U-tiByV-JmsU1FH40G_ikfkijCnT_6UiQvUXMiyajBXJMFPKs7flmUwDQT5SECWB_Zv0L7wztDvXHCWo7TUDi8kfZJMjZ-3GbKpx-Ey1CsawLRZiX5xCOu0u77eUd76CaHua_Zs7h7rnvU1fXC1GD3qAwc89NXAw6Y7cQpTW6tQhif91cwgfhQTGSGqHuF7Ak_rNO-49NklCZDCKfk0TLM3n1pa992WIQHJPj4rm0cIB4Mke42G6cR9N43vzRzcoNAxanndEdjy7O4t9VrVi8fhshlnMIJmYGngD-N4-erRxQ7SO_-3oo87tB9m7Vi0m925suWNO5uMpYnh0F_5vgDtWqULOZ2DBJOoGz5mv0SHm-ra88fWVZFEYG68nAMRqwx1MOjcJfvh8tFR8f7EyE1Eu_VXlZulurhrCsEWtquXgtyBFEujau8MWtQdvfI0CEgYoRbz93hfhEWjKj_t-oMlXYfwY-yupYTHAWqGqP3dhdX2qHh4qtycpK_nwx618qXvAWMRiS9AD0DyYAzl-EmEGIqNUCO3eYCVdz72mqiC4w8aO1k="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a6001e1d92481a3baefe589f3b26b2b",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Certainly. Please provide your preferred:\n\n- **Gym time**\n- **Study times** for each subject block\n\nYou may answer in this format:\n\n- Gym: 5:00 PM–6:30 PM\n- Physics: 10:00 AM–12:00 PM\n- Calculus: 12:30 PM–1:30 PM\n- Biology: 2:00 PM–4:00 PM\n\nOnce you provide the new times, I will revise the plan."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "what do u recommend?"
+        }
+      ]
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_02dcec0360ce5e39006a6001f3d89881a3849a3e1c6891f468",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "**Creating a structured schedule**\n\nI'm looking to provide a formal, concise response to the user about recommendations for gym and study times, considering their sleep pattern of 1am to 12pm and possible naps. I’ll suggest a schedule that reduces stress, proposing gym sessions before or after high-stress study blocks to aid recovery. For study sessions, I'll recommend split study times: physics in the early afternoon when they’re alert, followed by calculus, and shorter biology sessions. Let’s present this plan and ask if they’d like to adopt it."
+        }
+      ],
+      "encrypted_content": "gAAAAABqYAH3ESVh5J-a5g33BOM1C42vnFrdKLLSfokTJHOfScjD9rfrN7vl_IUiUYN_SzLD4SlmeKHIhUZvW2i-T0YZPGh4cMPcFKawIW-Lh95TxJzox4U0ymv1BvlzsD1uCxN8FoCZgtho2yQXX8ifViB8Ahou-EZMFpXCaRN1lCeIYxmi6lu3loFyH8NVOAceHKR-vE9kAkpgpWrweOAi6Yi2nKcudKpZbYVfkYh0Jt-F0xBgFYNrcz_WALxyyvUepX6zb-6kPrQNEEpQ_yiILWi5wXVg4AaFKZhRWEWRgUE6AM0nXV78FigYSR8BVHzyOgUctrlucCsA8FWdTNbUWKJJsws3VblHRIcL_yyoI964kVPGDjcr0a-IlPYbIocYVldFgdlzWI2ETcSMT2FFytKqA1-sHF9uKUMJf-Gdn1fMt-LNgp55y3atXYbpv-1KXlTwqJNacm8ce7twdxo-XNuD8o5Yx1YEIHQ9ZX6fKj2aQP42ArIBcfKzYaAYY3qTAO6EXicGGtogQ8wJykJz0PQNlzVEy9XNk1MxQAEe7qHflpJA2HnwTbDLr2dafkoKqhqyq_lM7XozAL7-jDO5ovVDokNMUdErHEyxoGvSymJGi-AM04e47o4UrPENVM2JEbjBqaVuaad-jT_-mNSqZMf34q4gd4t9WuEc6kVovudaP2A7hVk2ML5Qjp9oQrRDVT3Sl2cbh7vQWhM_krPLwhI0UKb9AV1bHz053hCtVBLCHUX8_U7eDZJacrLNeIzhjeCowCBDYK9tymezJXtQgpI3RaC7fp9SPXuIJDiuHPpJvs0BWBzQoRtPeL6PgW_ObeIh_hkeYRC3-9oUmgr0GMRQ4DdD_9Ke-mlR6kxxx85RxOvLGNzlLIydL2jou2V_Skv0-NPGA7REfSAADvt6VkfiGfNmyRbKjR9IqAyCD8KJmZoTphayyxVJW2xAKCsIWy1roo4v-rNVa4pQ7SUEjkYh9fF14HWaFPd6-NFxw4uxYVCHe1PecZvkVgdVqfJarGFRUxnsWLWC1iMgLuD3aRZb33jeMyi6AAfUCTYtMmBQCg7JKj-UPRhq1kU7MIkDWWJENECJHUpt9qJX1O0tmSbRjJeMbhqFBiMk22NdhOSGvbXUtimK4LQAijlJJTYDnSQPIiy_TQ_KWWFcmZz3ZlyHfbKRb_rUcTwCcmuEBRekboxT2B4ahVlHs4Jl1Mvr6sXbOYZXS6e2lNN1llhbte9X4szxBwn1BCVmg4Qs0JquAoFu0rE4RH1paStXG4UrJiiTVUqXj6fbkcWmNkaD2RtTBKFN5A0PaBg3siDsPtdZUQIsCVcdMAZ8TmPGviHs9hEEWzxf7QoazKCROnjHAHKzSF-FjtqHqUZd1afKilQ5-jb76lM5GF0SnP-heh1_o2mRN4y9rKmVTwlmeDjmB0eqTCQ3ow_houPZ2j8I47Nc7-YHMbpZNSEtgsVOm4w9etMQLeiwUSGpjHZFsB8eGY4tEkcZpdJRRBirziRz6ImK2GqfArtYxiAmKZZGftCIWh22WbP-9gofwdexLa3noPS47BvlsHBCcG6uHwx98Oo40NPXuqGR3c1nkunBY5ix-tFxwMnsjbz92Q2NmUCg5XiFbzA5Vdk_IebzINvkVjyIpXyD9ZcYdO1BsxkajB9MPUNbzB4_9e8E5QkJOTvTBJDmijvAc06feAghJRB6RNhjLQlgwCOquPEeZx47zyQDVeLuf3IivocEe1ucbcBcc4LmrdSSiuCMGfL9W00UcOaI1qwCPa4LT67C6kNCwsiVGOYEEplASMYRHeXhfyzG8tOsBstUKCktv19uhugwyMxx9Ugnur5eWlJ3x4fzJMHeDBOeQObt_fTgyrn8yMsWSPDgWjwiAvM5kA1XEdrhiNpVy5L13mmKeIScPAOqbgKks01OCIp9tiKSpG0b_bLmyB2xhhp3f18gtxLKO-gRjqDrSNAJhsF6xFWvf7WCB9niExEiexm2ealQM3dcxJrZh-rcd_hzGEndgxaj1i0yQV3hrSke2tSmi5uYTdgYmq0E-eoqxlaP-rflurP7qzEyS53SJVfABwE9Mm_ssctQyRmjLyOydAHpLStpO-1hB07UCDSANssOdNWpcLXTM0TtGe-zFBIZFLk-XJWaoRrTXfKWUffAf4GgDzl_oy4xni97p72mvmFYUucB18vbFUosiWlpomK-nuNLjaJg9orLBdDLNgJsbPw="
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a6001f7103481a3a85a1b55c2b4464b",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Certainly.\n\nI recommend this schedule:\n\n- **12:00 PM–1:15 PM:** Physics  \n- **1:15 PM–1:30 PM:** Break  \n- **1:30 PM–2:30 PM:** Calculus practice  \n- **2:30 PM–3:00 PM:** Break  \n- **3:00 PM–4:30 PM:** Biology  \n- **6:30 PM–8:00 PM:** Gym  \n\nThis places gym after study, so it can reduce stress from the afternoon block, and it shortens the most demanding study periods.\n\nWould you like me to apply this plan, or adjust the times further?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "apply this plan"
+        }
+      ]
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a600205ba6881a3b8bfcaa31681bdf5",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Understood. Your updated plan is:\n\n| Time | Activity |\n|---|---|\n| 1:00 AM–12:00 PM | Sleep |\n| 12:00 PM–1:15 PM | Physics |\n| 1:15 PM–1:30 PM | Break |\n| 1:30 PM–2:30 PM | Calculus practice |\n| 2:30 PM–3:00 PM | Break |\n| 3:00 PM–4:30 PM | Biology |\n| 6:30 PM–8:00 PM | Gym |\n| 9:00 PM–11:00 PM | Sleep |\n| 11:00 PM–1:00 AM | Sleep |\n\nIf you would like, I can also help you refine this further.  \nDo you need anything else?"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "no"
+        }
+      ]
+    },
+    {
+      "id": "msg_02dcec0360ce5e39006a600218546481a398ff3c46bc5f0b18",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Very well. Goodbye."
+        }
+      ]
+    }
+  ],
+  text={
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  reasoning={
+    "effort": "medium",
+    "mode": "standard",
+    "summary": "auto"
+  },
+  tools=[],
+  store=True,
+  include=[
+    "reasoning.encrypted_content",
+    "web_search_call.action.sources"
+  ]
+)
+
